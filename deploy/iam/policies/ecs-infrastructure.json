@@ -1,0 +1,24 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ManageBlueGreenLoadBalancer",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:DescribeListeners",
+        "elasticloadbalancing:DescribeRules",
+        "elasticloadbalancing:DescribeTargetGroups",
+        "elasticloadbalancing:ModifyListener",
+        "elasticloadbalancing:ModifyRule"
+      ],
+      "Resource": [
+        "${PRODUCTION_LISTENER_ARN}",
+        "${PRODUCTION_LISTENER_RULE_ARN}",
+        "${TEST_LISTENER_RULE_ARN}",
+        "${BLUE_TARGET_GROUP_ARN}",
+        "${GREEN_TARGET_GROUP_ARN}"
+      ]
+    }
+  ]
+}
+

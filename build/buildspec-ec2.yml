@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.13
+    commands:
+      - python -m pip install --requirement requirements.lock
+      - python -m pip install pytest ruff
+  pre_build:
+    commands:
+      - ruff check .
+      - python -m pytest -q
+  build:
+    commands:
+      - mkdir -p dist/ec2
+      - cp -a app requirements.lock dist/ec2/
+      - cp deploy/ec2/appspec.yml deploy/ec2/cicd-book.service dist/ec2/
+      - cp -a deploy/ec2/scripts dist/ec2/
+      - chmod +x dist/ec2/scripts/*.sh
+
+artifacts:
+  base-directory: dist/ec2
+  files:
+    - "**/*"
+    - appspec.yml
+

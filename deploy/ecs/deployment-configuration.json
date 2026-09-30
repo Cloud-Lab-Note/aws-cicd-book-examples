@@ -1,0 +1,18 @@
+{
+  "strategy": "BLUE_GREEN",
+  "maximumPercent": 200,
+  "minimumHealthyPercent": 100,
+  "bakeTimeInMinutes": 2,
+  "deploymentCircuitBreaker": {
+    "enable": true,
+    "rollback": true
+  },
+  "alarms": {
+    "alarmNames": [
+      "${ECS_UNHEALTHY_ALARM_NAME}"
+    ],
+    "enable": true,
+    "rollback": true
+  }
+}
+

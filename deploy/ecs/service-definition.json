@@ -1,0 +1,67 @@
+{
+  "serviceName": "cicd-book-api",
+  "cluster": "${ECS_CLUSTER_ARN}",
+  "taskDefinition": "${TASK_DEFINITION_ARN}",
+  "desiredCount": 1,
+  "launchType": "FARGATE",
+  "platformVersion": "LATEST",
+  "networkConfiguration": {
+    "awsvpcConfiguration": {
+      "subnets": [
+        "${PUBLIC_SUBNET_A_ID}",
+        "${PUBLIC_SUBNET_B_ID}"
+      ],
+      "securityGroups": [
+        "${ECS_SECURITY_GROUP_ID}"
+      ],
+      "assignPublicIp": "ENABLED"
+    }
+  },
+  "deploymentController": {
+    "type": "ECS"
+  },
+  "deploymentConfiguration": {
+    "strategy": "BLUE_GREEN",
+    "maximumPercent": 200,
+    "minimumHealthyPercent": 100,
+    "bakeTimeInMinutes": 2,
+    "deploymentCircuitBreaker": {
+      "enable": true,
+      "rollback": true
+    },
+    "alarms": {
+      "alarmNames": [
+        "${ECS_UNHEALTHY_ALARM_NAME}"
+      ],
+      "enable": true,
+      "rollback": true
+    }
+  },
+  "loadBalancers": [
+    {
+      "targetGroupArn": "${BLUE_TARGET_GROUP_ARN}",
+      "containerName": "cicd-book-api",
+      "containerPort": 8000,
+      "advancedConfiguration": {
+        "alternateTargetGroupArn": "${GREEN_TARGET_GROUP_ARN}",
+        "productionListenerRule": "${PRODUCTION_LISTENER_RULE_ARN}",
+        "testListenerRule": "${TEST_LISTENER_RULE_ARN}",
+        "roleArn": "${ECS_INFRASTRUCTURE_ROLE_ARN}"
+      }
+    }
+  ],
+  "healthCheckGracePeriodSeconds": 60,
+  "enableECSManagedTags": true,
+  "propagateTags": "SERVICE",
+  "tags": [
+    {
+      "key": "Project",
+      "value": "cicd-book"
+    },
+    {
+      "key": "Environment",
+      "value": "dev"
+    }
+  ]
+}
+

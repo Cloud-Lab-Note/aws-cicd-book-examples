@@ -1,0 +1,15 @@
+.git
+.venv
+.python
+.superpowers
+__pycache__
+.pytest_cache
+.ruff_cache
+docs
+manuscript
+tests
+deploy
+build
+scripts
+*.md
+

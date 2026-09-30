@@ -1,0 +1,20 @@
+[Unit]
+Description=AWS CI/CD Ebook FastAPI Demo
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=cicdbook
+Group=cicdbook
+WorkingDirectory=/opt/cicd-book/current
+EnvironmentFile=/etc/cicd-book.env
+ExecStart=/opt/cicd-book/current/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target
+
